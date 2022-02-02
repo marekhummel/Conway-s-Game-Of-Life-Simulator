@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
-namespace GameOfLife.Forms
+﻿namespace GameOfLife.Forms
 {
     public partial class SaveForm : Form
     {
@@ -15,225 +6,218 @@ namespace GameOfLife.Forms
         {
             InitializeComponent();
 
-			this.AcceptButton = btn_save;
-			this.CancelButton = btn_cancel;
-			btn_save.DialogResult = DialogResult.OK;
-			btn_cancel.DialogResult = DialogResult.Cancel;
+            AcceptButton = btn_save;
+            CancelButton = btn_cancel;
+            btn_save.DialogResult = DialogResult.OK;
+            btn_cancel.DialogResult = DialogResult.Cancel;
         }
 
-		private string path;
-		private int gen;
+        private string? path;
+        private int gen;
 
-		private SafeTypes safetype;
-		private enum SafeTypes
-		{
-			Bitmap,
-			GIF,
-			Data
-		}
+        private SafeTypes safetype;
+        private enum SafeTypes
+        {
+            Bitmap,
+            GIF,
+            Data
+        }
 
-		public UI.FieldOfLifeUI AFieldOfLife { get; set; }
+        public UI.FieldOfLifeUI? AFieldOfLife { get; set; }
 
-		// *****************
+        // *****************
 
-		private void SaveForm_Load(object sender, EventArgs e)
-		{
-			//Set the limit for the NUD
-			nud_gen.Maximum = Attributes.Generation;
+        private void SaveForm_Load(object sender, EventArgs e)
+        {
+            //Set the limit for the NUD
+            nud_gen.Maximum = Attributes.Generation;
 
-			//Set default path
-			txt_path.Text = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "GameOfLife File.bmp");
-		
-			//Set one RadioButton
-			rb_bmp.Checked = true;
-		}
+            //Set default path
+            txt_path.Text = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "GameOfLife File.bmp");
 
-		private void SaveForm_Shown(object sender, EventArgs e)
-		{
-			if (AFieldOfLife == null)
-				this.Close();
-		}
+            //Set one RadioButton
+            rb_bmp.Checked = true;
+        }
 
-		//Save
-		private void btn_save_Click(object sender, EventArgs e)
-		{
-			//Check whether the file already exist
+        private void SaveForm_Shown(object sender, EventArgs e)
+        {
+            if (AFieldOfLife == null) {
+                Close();
+            }
+        }
 
-			{
-				if (new System.IO.FileInfo(path).Exists)
-				{
-					string defpath = path.Substring(0, path.LastIndexOf('.'));
-					int counter = 2;
-					string ext = path.Substring(path.LastIndexOf('.'));
-					path = defpath + " (" + counter.ToString() + ")" + ext;
+        //Save
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            //Check whether the file already exist
 
-					while ((new System.IO.FileInfo(path)).Exists)
-					{
-						counter += 1;
-						path = path.Substring(0, path.Length - 7) + "(" + counter.ToString() + ")" + ext;
-					}
+            {
+                if (new System.IO.FileInfo(path).Exists) {
+                    string defpath = path.Substring(0, path.LastIndexOf('.'));
+                    int counter = 2;
+                    string ext = path.Substring(path.LastIndexOf('.'));
+                    path = defpath + " (" + counter.ToString() + ")" + ext;
 
-
-					//Info
-					string msg = "A file with the name \"" + defpath + ext + "\" does already exist. Do you want to rename the file into \"" + path + "\"?";
-
-					if ((MessageBox.Show(msg, "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != System.Windows.Forms.DialogResult.Yes))
-						return;
-				}
+                    while ((new System.IO.FileInfo(path)).Exists) {
+                        counter += 1;
+                        path = path.Substring(0, path.Length - 7) + "(" + counter.ToString() + ")" + ext;
+                    }
 
 
-				Bitmap bmp;
+                    //Info
+                    string msg = "A file with the name \"" + defpath + ext + "\" does already exist. Do you want to rename the file into \"" + path + "\"?";
 
-				//Save the current gen
-				bool[,] currgen = Attributes.Cells;
-
-				//Save
-				switch (safetype)
-				{
-					case SafeTypes.Bitmap:
-
-						bmp = new Bitmap(AFieldOfLife.Width, AFieldOfLife.Height);
-						Attributes.Cells = Attributes.CurrentCellStack.ToArray()[Attributes.CurrentCellStack.Count - 1 - gen];
-
-						AFieldOfLife.DrawOnGfx(Graphics.FromImage(bmp));
-						bmp.Save(path);
-
-						break;
-					case SafeTypes.GIF:
-
-						List<Bitmap> bmplist = new List<Bitmap>();
-						foreach (bool[,] generation in Attributes.CurrentCellStack)
-						{
-							Attributes.Cells = generation;
-							bmp = new Bitmap(AFieldOfLife.Width, AFieldOfLife.Height);
-							AFieldOfLife.DrawOnGfx(Graphics.FromImage(bmp));
-
-							//to get longer intervals
-							bmplist.Add(bmp);
-							bmplist.Add(bmp);
-						}
-
-						GifCreator.Save(bmplist, path);
-
-						break;
-					case SafeTypes.Data:
-
-						//Save the data in a textfile
-
-						using (System.IO.StreamWriter streamw = new System.IO.StreamWriter(new System.IO.FileStream(path, System.IO.FileMode.CreateNew), System.Text.Encoding.UTF8))
-						{
-							streamw.WriteLine(Attributes.AmountOfCellsPerLine.ToString());
-
-							bool[,] gentowrite = Attributes.CurrentCellStack.ToArray()[Attributes.CurrentCellStack.Count - 1 - gen];
-
-							for (int i = 0; i <= gentowrite.GetUpperBound(0); i++)
-							{
-								for (int j = 0; j <= gentowrite.GetUpperBound(1); j++)
-								{
-									streamw.Write(Convert.ToInt32(gentowrite[j, i]).ToString() + " ");
-								}
-								streamw.WriteLine();
-							}
-						}
+                    if ((MessageBox.Show(msg, "File already exists", MessageBoxButtons.YesNo, MessageBoxIcon.Information) != System.Windows.Forms.DialogResult.Yes)) {
+                        return;
+                    }
+                }
 
 
-						break;
-				}
+                Bitmap bmp;
 
-				//Restore last gen
-				Attributes.Cells = currgen;
+                //Save the current gen
+                bool[,] currgen = Attributes.Cells;
 
-				this.Close();
-			}
+                //Save
+                switch (safetype) {
+                    case SafeTypes.Bitmap:
+                        if (AFieldOfLife == null) {
+                            break;
+                        }
 
-		}
+                        bmp = new Bitmap(AFieldOfLife.Width, AFieldOfLife.Height);
+                        Attributes.Cells = Attributes.CurrentCellStack.ToArray()[Attributes.CurrentCellStack.Count - 1 - gen];
 
+                        AFieldOfLife.DrawOnGfx(Graphics.FromImage(bmp));
+                        bmp.Save(path);
 
+                        break;
+                    case SafeTypes.GIF:
+                        if (AFieldOfLife == null) {
+                            break;
+                        }
 
-		//Update vars
-    
-		private void txt_path_TextChanged(object sender, EventArgs e)
-		{
-			path = txt_path.Text;
-		}
+                        var bmplist = new List<Bitmap>();
+                        foreach (bool[,] generation in Attributes.CurrentCellStack) {
+                            Attributes.Cells = generation;
+                            bmp = new Bitmap(AFieldOfLife.Width, AFieldOfLife.Height);
+                            AFieldOfLife.DrawOnGfx(Graphics.FromImage(bmp));
 
-		private void nud_gen_ValueChanged(object sender, EventArgs e)
-		{
-			gen = (int)nud_gen.Value;
-		}
+                            //to get longer intervals
+                            bmplist.Add(bmp);
+                            bmplist.Add(bmp);
+                        }
 
-		private void rb_CheckedChanged(object sender, EventArgs e)
-		{
-			switch (((RadioButton)sender).Name)
-			{
-				case "rb_bmp":
-					safetype = SafeTypes.Bitmap;
-					txt_path.Text = new System.IO.FileInfo(txt_path.Text).FullName.Replace(new System.IO.FileInfo(txt_path.Text).Extension, ".bmp");
-					nud_gen.Enabled = true;
-					break;
-				case "rb_gif":
-					safetype = SafeTypes.GIF;
-					txt_path.Text = new System.IO.FileInfo(txt_path.Text).FullName.Replace(new System.IO.FileInfo(txt_path.Text).Extension, ".gif");
-					nud_gen.Enabled = false;
-					break;
-				case "rb_data":
-					safetype = SafeTypes.Data;
-					txt_path.Text = new System.IO.FileInfo(txt_path.Text).FullName.Replace(new System.IO.FileInfo(txt_path.Text).Extension, ".cgol");
-					nud_gen.Enabled = true;
-					break;
-			}
+                        GifCreator.Save(bmplist, path);
 
-		}
+                        break;
+                    case SafeTypes.Data:
 
-	
+                        //Save the data in a textfile
 
-		//Browse the path
-		private void btn_browse_Click(object sender, EventArgs e)
-		{
-			SaveFileDialog sfd = new SaveFileDialog();
+                        using (var streamw = new System.IO.StreamWriter(new System.IO.FileStream(path, System.IO.FileMode.CreateNew), System.Text.Encoding.UTF8)) {
+                            streamw.WriteLine(Attributes.AmountOfCellsPerLine.ToString());
 
-			sfd.AddExtension = true;
-			sfd.CheckFileExists = false;
-			sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-			sfd.Title = "Select GameOfLife Field saving path";
+                            bool[,] gentowrite = Attributes.CurrentCellStack.ToArray()[Attributes.CurrentCellStack.Count - 1 - gen];
 
-			string defaultext = "";
-			string filename = "GameOfLife State";
-			string filter = "";
-			switch (safetype)
-			{
-				case SafeTypes.Bitmap:
-					filename += ".bmp";
-					filter += "Bitmap (*.bmp)|*.bmp";
-					defaultext += ".bmp";
-					break;
-				case SafeTypes.GIF:
-					filename += ".gif";
-					filter += "GIF-Image (*.gif)|*.gif";
-					defaultext += ".gif";
-					break;
-				case SafeTypes.Data:
-					filename += ".cgol";
-					filter += "Datafile (*.cgol)|*.cgol";
-					defaultext += ".cgol";
-					break;
-			}
-
-			sfd.DefaultExt = defaultext;
-			sfd.FileName = filename;
-			sfd.Filter = filter + "|All Files (*.*)|*.*";
+                            for (int i = 0; i <= gentowrite.GetUpperBound(0); i++) {
+                                for (int j = 0; j <= gentowrite.GetUpperBound(1); j++) {
+                                    streamw.Write(Convert.ToInt32(gentowrite[j, i]).ToString() + " ");
+                                }
+                                streamw.WriteLine();
+                            }
+                        }
 
 
-			if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-			{
-				//if the path is valid
-				if (new System.IO.DirectoryInfo(new System.IO.FileInfo(sfd.FileName).DirectoryName).Exists)
-					txt_path.Text = sfd.FileName;
-			}
+                        break;
+                }
+
+                //Restore last gen
+                Attributes.Cells = currgen;
+
+                Close();
+            }
+
+        }
 
 
-		}
 
-	
-	}
+        //Update vars
+
+        private void txt_path_TextChanged(object sender, EventArgs e) => path = txt_path.Text;
+
+        private void nud_gen_ValueChanged(object sender, EventArgs e) => gen = (int)nud_gen.Value;
+
+        private void rb_CheckedChanged(object sender, EventArgs e)
+        {
+            switch (((RadioButton)sender).Name) {
+                case "rb_bmp":
+                    safetype = SafeTypes.Bitmap;
+                    txt_path.Text = new System.IO.FileInfo(txt_path.Text).FullName.Replace(new System.IO.FileInfo(txt_path.Text).Extension, ".bmp");
+                    nud_gen.Enabled = true;
+                    break;
+                case "rb_gif":
+                    safetype = SafeTypes.GIF;
+                    txt_path.Text = new System.IO.FileInfo(txt_path.Text).FullName.Replace(new System.IO.FileInfo(txt_path.Text).Extension, ".gif");
+                    nud_gen.Enabled = false;
+                    break;
+                case "rb_data":
+                    safetype = SafeTypes.Data;
+                    txt_path.Text = new System.IO.FileInfo(txt_path.Text).FullName.Replace(new System.IO.FileInfo(txt_path.Text).Extension, ".cgol");
+                    nud_gen.Enabled = true;
+                    break;
+            }
+
+        }
+
+
+
+        //Browse the path
+        private void btn_browse_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog {
+                AddExtension = true,
+                CheckFileExists = false,
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                Title = "Select GameOfLife Field saving path"
+            };
+
+            string defaultext = "";
+            string filename = "GameOfLife State";
+            string filter = "";
+            switch (safetype) {
+                case SafeTypes.Bitmap:
+                    filename += ".bmp";
+                    filter += "Bitmap (*.bmp)|*.bmp";
+                    defaultext += ".bmp";
+                    break;
+                case SafeTypes.GIF:
+                    filename += ".gif";
+                    filter += "GIF-Image (*.gif)|*.gif";
+                    defaultext += ".gif";
+                    break;
+                case SafeTypes.Data:
+                    filename += ".cgol";
+                    filter += "Datafile (*.cgol)|*.cgol";
+                    defaultext += ".cgol";
+                    break;
+            }
+
+            sfd.DefaultExt = defaultext;
+            sfd.FileName = filename;
+            sfd.Filter = filter + "|All Files (*.*)|*.*";
+
+
+            if (sfd.ShowDialog() == DialogResult.OK) {
+                //if the path is valid
+                if (new System.IO.DirectoryInfo(new System.IO.FileInfo(sfd.FileName).DirectoryName ?? "").Exists) {
+                    txt_path.Text = sfd.FileName;
+                }
+            }
+
+
+        }
+
+
+    }
 }

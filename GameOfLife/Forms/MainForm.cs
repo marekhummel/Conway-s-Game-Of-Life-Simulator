@@ -39,8 +39,8 @@ namespace GameOfLife
 
             //Refresh GUI
             CellsDiffer();
-            Text += "  --  vers. " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." +
-                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString();
+            Text += "  --  vers. " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.Major.ToString() + "." +
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.Minor.ToString();
 
             //(new Forms.LoadForm()).ShowDialog();
             //this.Close();
@@ -62,7 +62,7 @@ namespace GameOfLife
             var settings = new Queue<string>();
             using (var sr = new System.IO.StreamReader(settingspath)) {
                 while (sr.Peek() > -1) {
-                    settings.Enqueue(sr.ReadLine());
+                    settings.Enqueue(sr.ReadLine() ?? "");
                 }
             }
 
@@ -76,9 +76,9 @@ namespace GameOfLife
                 TheFieldOfLife.LivingCellColor = Color.FromArgb(int.Parse(settings.Dequeue()));
                 TheFieldOfLife.HoverColor = Color.FromArgb(int.Parse(settings.Dequeue()));
 
-                TheFieldOfLife.CellStyle = (UI.FieldOfLifeUI.CellStyles)System.Enum.Parse(Type.GetType(typeof(UI.FieldOfLifeUI.CellStyles).FullName), settings.Dequeue());
+                TheFieldOfLife.CellStyle = (UI.FieldOfLifeUI.CellStyles)Enum.Parse(Type.GetType(typeof(UI.FieldOfLifeUI.CellStyles).FullName), settings.Dequeue());
                 TheFieldOfLife.CellFigureDistance = int.Parse(settings.Dequeue());
-                TheFieldOfLife.GridStyle = (UI.FieldOfLifeUI.GridStyles)System.Enum.Parse(Type.GetType(typeof(UI.FieldOfLifeUI.GridStyles).FullName), settings.Dequeue());
+                TheFieldOfLife.GridStyle = (UI.FieldOfLifeUI.GridStyles)Enum.Parse(Type.GetType(typeof(UI.FieldOfLifeUI.GridStyles).FullName), settings.Dequeue());
 
                 Attributes.Refreshrate = int.Parse(settings.Dequeue());
                 Attributes.TorusActivated = bool.Parse(settings.Dequeue());
@@ -125,10 +125,10 @@ namespace GameOfLife
 
 
         //Buttons
-        private Forms.RandomCellsForm randcellsfrm;
-        private Forms.LoadForm loadfrm;
-        private Forms.SaveForm savefrm;
-        private Forms.SettingsForm settfrm;
+        private Forms.RandomCellsForm? randcellsfrm;
+        private Forms.LoadForm? loadfrm;
+        private Forms.SaveForm? savefrm;
+        private Forms.SettingsForm? settfrm;
 
         private void btn_clear_Click(object sender, EventArgs e)
         {
@@ -203,6 +203,10 @@ namespace GameOfLife
         //Gets handled when the Cells change
         private void settfrm_UISettingsChanged()
         {
+            if (settfrm == null) {
+                return;
+            }
+
             TheFieldOfLife.GridStyle = settfrm.UISettings.GridStyle;
             TheFieldOfLife.CellStyle = settfrm.UISettings.CellStyle;
             TheFieldOfLife.CellFigureDistance = settfrm.UISettings.Distance;
