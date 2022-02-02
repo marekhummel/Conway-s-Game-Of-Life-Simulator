@@ -60,7 +60,7 @@ namespace GameOfLife
             get { return (int)Math.Pow(AmountOfCellsPerLine, 2); }
         }
 
-        public static double Destiny
+        public static double Density
         {
             get { return ((double)AmountOfLivingCells / (double)AmountOfTotalCells); }
         }

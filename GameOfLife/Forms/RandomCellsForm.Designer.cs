@@ -29,11 +29,11 @@
 		private void InitializeComponent()
 		{
 			this.lbl_Text = new System.Windows.Forms.Label();
-			this.Destiny = new System.Windows.Forms.NumericUpDown();
+			this.Density = new System.Windows.Forms.NumericUpDown();
 			this.lbl_percent = new System.Windows.Forms.Label();
 			this.btn_ok = new System.Windows.Forms.Button();
 			this.btn_cancel = new System.Windows.Forms.Button();
-			((System.ComponentModel.ISupportInitialize)(this.Destiny)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.Density)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// lbl_Text
@@ -43,17 +43,17 @@
 			this.lbl_Text.Name = "lbl_Text";
 			this.lbl_Text.Size = new System.Drawing.Size(167, 14);
 			this.lbl_Text.TabIndex = 0;
-			this.lbl_Text.Text = "Destiny (used as probability):";
+			this.lbl_Text.Text = "Density (used as probability):";
 			// 
-			// Destiny
+			// Density
 			// 
-			this.Destiny.DecimalPlaces = 1;
-			this.Destiny.Location = new System.Drawing.Point(185, 20);
-			this.Destiny.Name = "Destiny";
-			this.Destiny.Size = new System.Drawing.Size(92, 22);
-			this.Destiny.TabIndex = 2;
-			this.Destiny.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.Destiny.Value = new decimal(new int[] {
+			this.Density.DecimalPlaces = 1;
+			this.Density.Location = new System.Drawing.Point(185, 20);
+			this.Density.Name = "Density";
+			this.Density.Size = new System.Drawing.Size(92, 22);
+			this.Density.TabIndex = 2;
+			this.Density.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.Density.Value = new decimal(new int[] {
             40,
             0,
             0,
@@ -95,7 +95,7 @@
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.lbl_percent);
-			this.Controls.Add(this.Destiny);
+			this.Controls.Add(this.Density);
 			this.Controls.Add(this.lbl_Text);
 			this.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -103,13 +103,13 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "Add Random Cells";
 			this.TopMost = true;
-			((System.ComponentModel.ISupportInitialize)(this.Destiny)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.Density)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 		internal System.Windows.Forms.Label lbl_Text;
-		internal System.Windows.Forms.NumericUpDown Destiny;
+		internal System.Windows.Forms.NumericUpDown Density;
 		internal System.Windows.Forms.Label lbl_percent;
 		internal System.Windows.Forms.Button btn_ok;
 

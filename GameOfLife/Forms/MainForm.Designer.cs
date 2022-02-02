@@ -30,11 +30,11 @@
         {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.Information = new System.Windows.Forms.GroupBox();
-			this.lbl_value_destiny = new System.Windows.Forms.Label();
+			this.lbl_value_Density = new System.Windows.Forms.Label();
 			this.lbl_value_total = new System.Windows.Forms.Label();
 			this.lbl_value_living = new System.Windows.Forms.Label();
 			this.lbl_value_gen = new System.Windows.Forms.Label();
-			this.lbl_destiny = new System.Windows.Forms.Label();
+			this.lbl_Density = new System.Windows.Forms.Label();
 			this.lbl_total = new System.Windows.Forms.Label();
 			this.lbl_living = new System.Windows.Forms.Label();
 			this.lbl_generation = new System.Windows.Forms.Label();
@@ -57,11 +57,11 @@
 			// Information
 			// 
 			this.Information.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.Information.Controls.Add(this.lbl_value_destiny);
+			this.Information.Controls.Add(this.lbl_value_Density);
 			this.Information.Controls.Add(this.lbl_value_total);
 			this.Information.Controls.Add(this.lbl_value_living);
 			this.Information.Controls.Add(this.lbl_value_gen);
-			this.Information.Controls.Add(this.lbl_destiny);
+			this.Information.Controls.Add(this.lbl_Density);
 			this.Information.Controls.Add(this.lbl_total);
 			this.Information.Controls.Add(this.lbl_living);
 			this.Information.Controls.Add(this.lbl_generation);
@@ -72,15 +72,15 @@
 			this.Information.TabStop = false;
 			this.Information.Text = "Information";
 			// 
-			// lbl_value_destiny
+			// lbl_value_Density
 			// 
-			this.lbl_value_destiny.AutoSize = true;
-			this.lbl_value_destiny.Location = new System.Drawing.Point(144, 100);
-			this.lbl_value_destiny.Name = "lbl_value_destiny";
-			this.lbl_value_destiny.Size = new System.Drawing.Size(22, 14);
-			this.lbl_value_destiny.TabIndex = 7;
-			this.lbl_value_destiny.Text = "0%";
-			this.lbl_value_destiny.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lbl_value_Density.AutoSize = true;
+			this.lbl_value_Density.Location = new System.Drawing.Point(144, 100);
+			this.lbl_value_Density.Name = "lbl_value_Density";
+			this.lbl_value_Density.Size = new System.Drawing.Size(22, 14);
+			this.lbl_value_Density.TabIndex = 7;
+			this.lbl_value_Density.Text = "0%";
+			this.lbl_value_Density.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lbl_value_total
 			// 
@@ -112,15 +112,15 @@
 			this.lbl_value_gen.Text = "0";
 			this.lbl_value_gen.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
-			// lbl_destiny
+			// lbl_Density
 			// 
-			this.lbl_destiny.AutoSize = true;
-			this.lbl_destiny.Location = new System.Drawing.Point(21, 100);
-			this.lbl_destiny.Margin = new System.Windows.Forms.Padding(5);
-			this.lbl_destiny.Name = "lbl_destiny";
-			this.lbl_destiny.Size = new System.Drawing.Size(50, 14);
-			this.lbl_destiny.TabIndex = 3;
-			this.lbl_destiny.Text = "Destiny:";
+			this.lbl_Density.AutoSize = true;
+			this.lbl_Density.Location = new System.Drawing.Point(21, 100);
+			this.lbl_Density.Margin = new System.Windows.Forms.Padding(5);
+			this.lbl_Density.Name = "lbl_Density";
+			this.lbl_Density.Size = new System.Drawing.Size(50, 14);
+			this.lbl_Density.TabIndex = 3;
+			this.lbl_Density.Text = "Density:";
 			// 
 			// lbl_total
 			// 
@@ -351,11 +351,11 @@
 
 
 		internal System.Windows.Forms.GroupBox Information;
-		internal System.Windows.Forms.Label lbl_value_destiny;
+		internal System.Windows.Forms.Label lbl_value_Density;
 		internal System.Windows.Forms.Label lbl_value_total;
 		internal System.Windows.Forms.Label lbl_value_living;
 		internal System.Windows.Forms.Label lbl_value_gen;
-		internal System.Windows.Forms.Label lbl_destiny;
+		internal System.Windows.Forms.Label lbl_Density;
 		internal System.Windows.Forms.Label lbl_total;
 		internal System.Windows.Forms.Label lbl_living;
 		internal System.Windows.Forms.Label lbl_generation;
